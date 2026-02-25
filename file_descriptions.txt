@@ -1,0 +1,71 @@
+====================================================================
+  FILE DESCRIPTIONS — Diabetic Foot Complication Analysis Project
+====================================================================
+
+1. README.md
+   - Project documentation listing all 6 deliverables, architecture,
+     getting started instructions, and file references.
+
+2. EXPLORATORY DATA ANALYSIS(Jubril).pdf
+   - Full EDA report with visualizations comparing Control vs. DM
+     groups. Covers angiosome temperature distributions and TCI values.
+
+3. Preprocessing & Segmentation.pdf
+   - Visual validation report demonstrating the Hybrid Segmentation
+     technique (Histogram Thresholding + Morphological Operations),
+     with results on Cold/Ischemic feet.
+
+4. EVALUATION REPORT.pdf
+   - Compiled evaluation report containing diagnostic performance
+     metrics (Precision, Recall, F1-Score) and confusion matrices
+     at both the 1.8°C and 2.6°C threshold levels.
+
+5. Plantar_Thermogram_Database_for_the_Study_of_Diabetic_Foot_Complications.pdf
+   - Reference paper / documentation for the thermogram database
+     used in this project.
+
+6. Jubril's Notebook & Other Deliverables.ipynb
+   - Jupyter Notebook containing executable code for:
+       • EDA (data loading, statistical summaries, distribution plots)
+       • Preprocessing & segmentation walkthrough
+       • Full analysis pipeline (run_full_analysis function)
+       • Final Symmetry Report (Delta-T classification, 2.2°C threshold)
+       • Sensitivity Analysis — ROC Curve with 1.8°C and 2.6°C markers
+       • Classification Reports and Confusion Matrices at both thresholds
+
+7. segmentation.py
+   - Core segmentation module. Contains the image_proc() function
+     which performs: image standardization → histogram thresholding →
+     morphological operations → noise removal. Returns the segmented
+     foot image and binary mask.
+
+8. full_pipeline.py
+   - End-to-end signal processing pipeline. Contains:
+       • pipeline() — orchestrates left/right foot processing
+       • extract_and_save_angiosomes() — segments foot into 4 angiosomes
+         (MPA, LPA, LCA, MCA), computes mean temperatures, saves CSVs
+
+9. streamlit_app.py
+   - Streamlit Diagnostic Dashboard. Features:
+       • File upload sidebar (left/right images + CSVs)
+       • Global Diagnosis Banner (Normal / Monitoring / Local Risk / Diffuse Risk)
+       • 2x5 angiosome segmentation visualization grid
+       • Traffic Light Symmetry Metrics (Normal ≤1.8°C, Warning 1.8-2.6°C, High Risk >2.6°C)
+
+10. foot_plot.py
+    - Visualization helper script for plotting foot thermogram data.
+
+11. requirements.txt
+    - Python package dependencies for the project.
+
+12. packages.txt
+    - System-level package dependencies (used for Streamlit Cloud deployment).
+
+13. .gitignore
+    - Specifies files and directories excluded from version control.
+
+14. ThermoDataBase/ (directory)
+    - Contains the raw thermogram images and CSV temperature data
+      for both Control and DM patient groups.
+
+====================================================================
