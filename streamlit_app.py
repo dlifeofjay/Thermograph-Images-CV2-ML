@@ -104,35 +104,41 @@ def main():
 
                 # --- 1. GLOBAL DIAGNOSIS ---
                 angiosomes = ["MPA", "LPA", "MCA", "LCA"]
-                high_risk_count = 0
-                warning_count = 0
+                critical_risk_count = 0
+                moderate_risk_count = 0
+                normal_count = 0
+                healthy_count = 0
                 diffs = {}
 
                 for angio in angiosomes:
                     diff = abs(l_means.get(angio, 0) - r_means.get(angio, 0))
                     diffs[angio] = diff
-                    if diff > 2.6:
-                        high_risk_count += 1
-                    elif diff > 1.8:
-                        warning_count += 1
+                    if diff >= 3.0:
+                        critical_risk_count += 1
+                    elif diff >= 2.0:
+                        moderate_risk_count += 1
+                    elif diff >= 1.5:
+                        normal_count += 1
+                    else:
+                        healthy_count += 1
                 
                 # Diagnosis Logic
-                if high_risk_count >= 2:
-                    diag_status = "DIFFUSE RISK"
+                if critical_risk_count > 0:
+                    diag_status = "CRITICAL RISK"
                     diag_color = "#ff3333" # Red
-                    diag_msg = f"Multiple High Risk regions ({high_risk_count}) detected."
-                elif high_risk_count == 1:
-                    diag_status = "LOCAL RISK"
-                    diag_color = "#ff3333" # Red
-                    diag_msg = "Single High Risk region detected."
-                elif warning_count > 0:
-                    diag_status = "MONITORING REQUIRED"
+                    diag_msg = f"{critical_risk_count} region(s) in Critical Risk."
+                elif moderate_risk_count > 0:
+                    diag_status = "MODERATE RISK"
                     diag_color = "#ffcc00" # Orange
-                    diag_msg = f"{warning_count} regions in Warning zone."
-                else:
+                    diag_msg = f"{moderate_risk_count} region(s) in Moderate Risk."
+                elif normal_count > 0:
                     diag_status = "NORMAL"
+                    diag_color = "#3399ff" # Blue
+                    diag_msg = f"{normal_count} region(s) in Normal range."
+                else:
+                    diag_status = "HEALTHY"
                     diag_color = "#00cc66" # Green
-                    diag_msg = "No significant temperature asymmetry."
+                    diag_msg = "All regions are Healthy."
 
                 st.markdown(f"""
                 <div class="diagnosis-banner" style="background-color: {diag_color}22; border: 2px solid {diag_color}; color: {diag_color};">
@@ -186,15 +192,18 @@ def main():
                     r_val = r_means.get(angio, 0)
                     
                     # Traffic Light Thresholds
-                    if diff > 2.6:
+                    if diff >= 3.0:
                         risk_color = "#ff3333" # Red
-                        risk_label = "HIGH RISK"
-                    elif diff > 1.8:
+                        risk_label = "CRITICAL RISK"
+                    elif diff >= 2.0:
                         risk_color = "#ffcc00" # Orange
-                        risk_label = "WARNING"
+                        risk_label = "MODERATE RISK"
+                    elif diff >= 1.5:
+                        risk_color = "#3399ff" # Blue
+                        risk_label = "NORMAL"
                     else:
                         risk_color = "#00cc66" # Green
-                        risk_label = "NORMAL"
+                        risk_label = "HEALTHY"
                     
                     with cols[i]:
                         st.markdown(f"""
